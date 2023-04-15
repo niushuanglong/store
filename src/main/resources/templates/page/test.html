@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<canvas id="canvas1" width="300" height="300">
+    <video id="video1"></video>
+
+</canvas>
+<video id=”video” autoplay=""></video>
+
+<script>
+
+    var video_element=document.getElementById('video');
+
+    if(navigator.getUserMedia){ // opera应使用opera.getUserMedianow
+
+        navigator.getUserMedia('video',success,error) //success是回调函数,当然你也可以直接在此写一个匿名函数
+
+    }
+
+    function success(stream){
+
+        video_element.src=stream
+
+    }
+
+</script>
+</body>
+</html>

@@ -1,0 +1,25 @@
+xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+
+  th:href="@{/layui/css/public.css}"
+  th:href="@{/layui/css/layui.css}"
+  th:href="@{/lib/font-awesome-4.7.0/css/font-awesome.min.css}"
+
+  th:src="@{/layui/layui.js}"
+  th:src="@{/layui/js/lay-config.js?v=1.0.4}"
+<script th:src="@{/lib/jquery-3.4.1/jquery-3.4.1.min.js}" charset="utf-8"></script>
+
+  <layui-ali th:replace="common/common_css :: commonCss"></layui-ali>
+
+<layui-vue th:replace="common/common_js :: commonJs"></layui-vue>
+
+解决方式
+1.也就是把cols后的[[ ]]变为jquery
+[express
+    [json
+    ]app
+]ui
+由于[[…]]之间的表达式在thymeleaf被认为是内联表达式,因此渲染错误url
+2.或者在<script type="text/javascript" >  加上 th:inline="none".net
+<script type="text/javascript" th:inline="none">
+
+

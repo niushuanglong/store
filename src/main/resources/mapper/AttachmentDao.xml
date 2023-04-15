@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.niu.web.business.mapper.AttachmentDao">
+    <!-- 可根据自己的需求，是否要使用 -->
+    <resultMap type="com.niu.web.business.pojo.Attachment" id="tAttMap">
+        <result property="id" column="id"/>
+        <result property="baseDir" column="base_dir"/>
+        <result property="category" column="category"/>
+        <result property="contentType" column="content_type"/>
+<!--        <result property="dataBlob" column="data_blob" jdbcType="BLOB"/>-->
+        <result property="diskPath" column="disk_path"/>
+        <result property="fileSize" column="file_size"/>
+        <result property="name" column="name"/>
+        <result property="saveType" column="save_type"/>
+        <result property="valid" column="valid"/>
+        <result property="version" column="version"/>
+        <result property="tmpFilePath" column="tmp_file_path"/>
+        <result property="createTime" column="create_time"/>
+        <result property="ipAddress" column="ip_address"/>
+        <result property="lastUpdateTime" column="last_update_time"/>
+        <result property="userId" column="user_id"/>
+    </resultMap>
+
+
+    <!--    &lt;!&ndash;查询单个&ndash;&gt;-->
+    <select id="findAttachmentByTypeUserId" resultType="string">
+        select id from t_att
+        where user_id = #{userId} and save_type=#{saveType} and category=#{category}
+    </select>
+
+<!--    &lt;!&ndash;查询指定行数据&ndash;&gt;-->
+<!--    <select id="queryAllByLimit" resultMap="AccessTokenMap">-->
+<!--        select-->
+<!--        access_token, expire_time, id, create_time, last_update_time, new_column, ip_address-->
+<!--        from access_token-->
+<!--        <where>-->
+<!--            <if test="accessTokenUser != null and accessTokenUser != ''">-->
+<!--                and access_token = #{accessTokenUser}-->
+<!--            </if>-->
+<!--            <if test="expireTime != null">-->
+<!--                and expire_time = #{expireTime}-->
+<!--            </if>-->
+<!--            <if test="id != null and id != ''">-->
+<!--                and id = #{id}-->
+<!--            </if>-->
+<!--            <if test="createTime != null">-->
+<!--                and create_time = #{createTime}-->
+<!--            </if>-->
+<!--            <if test="lastUpdateTime != null">-->
+<!--                and last_update_time = #{lastUpdateTime}-->
+<!--            </if>-->
+<!--            <if test="newColumn != null">-->
+<!--                and new_column = #{newColumn}-->
+<!--            </if>-->
+<!--            <if test="ipAddress != null and ipAddress != ''">-->
+<!--                and ip_address = #{ipAddress}-->
+<!--            </if>-->
+<!--        </where>-->
+<!--        limit #{pageable.offset}, #{pageable.pageSize}-->
+<!--    </select>-->
+
+<!--    &lt;!&ndash;统计总行数&ndash;&gt;-->
+<!--    <select id="count" resultType="java.lang.Long">-->
+<!--        select count(1)-->
+<!--        from access_token-->
+<!--        <where>-->
+<!--            <if test="accessTokenUser != null and accessTokenUser != ''">-->
+<!--                and access_token = #{accessTokenUser}-->
+<!--            </if>-->
+<!--            <if test="expireTime != null">-->
+<!--                and expire_time = #{expireTime}-->
+<!--            </if>-->
+<!--            <if test="id != null and id != ''">-->
+<!--                and id = #{id}-->
+<!--            </if>-->
+<!--            <if test="createTime != null">-->
+<!--                and create_time = #{createTime}-->
+<!--            </if>-->
+<!--            <if test="lastUpdateTime != null">-->
+<!--                and last_update_time = #{lastUpdateTime}-->
+<!--            </if>-->
+<!--            <if test="newColumn != null">-->
+<!--                and new_column = #{newColumn}-->
+<!--            </if>-->
+<!--            <if test="ipAddress != null and ipAddress != ''">-->
+<!--                and ip_address = #{ipAddress}-->
+<!--            </if>-->
+<!--        </where>-->
+<!--    </select>-->
+
+<!--    &lt;!&ndash;新增所有列&ndash;&gt;-->
+<!--    <insert id="insert" keyProperty="" useGeneratedKeys="true">-->
+<!--        insert into access_token(access_token, expire_time, id, create_time, last_update_time, new_column, ip_address)-->
+<!--        values (#{accessTokenUser}, #{expireTime}, #{id}, #{createTime}, #{lastUpdateTime}, #{newColumn}, #{ipAddress})-->
+<!--    </insert>-->
+
+<!--    <insert id="insertBatch" keyProperty="" useGeneratedKeys="true">-->
+<!--        insert into access_token(access_token, expire_time, id, create_time, last_update_time, new_column, ip_address)-->
+<!--        values-->
+<!--        <foreach collection="entities" item="entity" separator=",">-->
+<!--            (#{entity.accessTokenUser}, #{entity.expireTime}, #{entity.id}, #{entity.createTime}, #{entity.lastUpdateTime},-->
+<!--            #{entity.newColumn}, #{entity.ipAddress})-->
+<!--        </foreach>-->
+<!--    </insert>-->
+
+<!--    <insert id="insertOrUpdateBatch" keyProperty="" useGeneratedKeys="true">-->
+<!--        insert into access_token(access_token, expire_time, id, create_time, last_update_time, new_column, ip_address)-->
+<!--        values-->
+<!--        <foreach collection="entities" item="entity" separator=",">-->
+<!--            (#{entity.accessTokenUser}, #{entity.expireTime}, #{entity.id}, #{entity.createTime}, #{entity.lastUpdateTime},-->
+<!--            #{entity.newColumn}, #{entity.ipAddress})-->
+<!--        </foreach>-->
+<!--        on duplicate key update-->
+<!--        access_token = values(access_token),-->
+<!--        expire_time = values(expire_time),-->
+<!--        id = values(id),-->
+<!--        create_time = values(create_time),-->
+<!--        last_update_time = values(last_update_time),-->
+<!--        new_column = values(new_column),-->
+<!--        ip_address = values(ip_address)-->
+<!--    </insert>-->
+
+<!--    &lt;!&ndash;通过主键修改数据&ndash;&gt;-->
+<!--    <update id="update">-->
+<!--        update access_token-->
+<!--        <set>-->
+<!--            <if test="accessTokenUser != null and accessTokenUser != ''">-->
+<!--                access_token = #{accessTokenUser},-->
+<!--            </if>-->
+<!--            <if test="expireTime != null">-->
+<!--                expire_time = #{expireTime},-->
+<!--            </if>-->
+<!--            <if test="id != null and id != ''">-->
+<!--                id = #{id},-->
+<!--            </if>-->
+<!--            <if test="createTime != null">-->
+<!--                create_time = #{createTime},-->
+<!--            </if>-->
+<!--            <if test="lastUpdateTime != null">-->
+<!--                last_update_time = #{lastUpdateTime},-->
+<!--            </if>-->
+<!--            <if test="newColumn != null">-->
+<!--                new_column = #{newColumn},-->
+<!--            </if>-->
+<!--            <if test="ipAddress != null and ipAddress != ''">-->
+<!--                ip_address = #{ipAddress},-->
+<!--            </if>-->
+<!--        </set>-->
+<!--        where = #{}-->
+<!--    </update>-->
+
+<!--    &lt;!&ndash;通过主键删除&ndash;&gt;-->
+<!--    <delete id="deleteById">-->
+<!--        delete-->
+<!--        from access_token-->
+<!--        where id= #{id}-->
+<!--    </delete>-->
+
+</mapper>
+

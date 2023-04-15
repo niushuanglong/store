@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>示例演示</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- 注意：项目正式环境请勿引用该地址 -->
+    <link th:href="@{/layui/css/layui.css}" rel="stylesheet">
+</head>
+<body>
+
+<table class="layui-hide" id="test" lay-filter="test"></table>
+
+<script type="text/html" id="toolbarDemo">
+    <div class="layui-form layui-card-header layuiadmin-card-header-auto">
+        <div class="layui-form-item">
+            <div class="layui-inline">
+                <label class="layui-form-label">ID</label>
+                <div class="layui-input-block">
+                    <input type="text" name="id" placeholder="请输入" autocomplete="off" class="layui-input">
+                </div>
+            </div>
+            <div class="layui-inline">
+                <label class="layui-form-label">用户名</label>
+                <div class="layui-input-block">
+                    <input type="text" name="username" placeholder="请输入" autocomplete="off" class="layui-input">
+                </div>
+            </div>
+            <div class="layui-inline">
+                <label class="layui-form-label">邮箱</label>
+                <div class="layui-input-block">
+                    <input type="text" name="email" placeholder="请输入" autocomplete="off" class="layui-input">
+                </div>
+            </div>
+            <div class="layui-inline">
+                <label class="layui-form-label">性别</label>
+                <div class="layui-input-block">
+                    <select name="sex">
+                        <option value="0">不限</option>
+                        <option value="1">男</option>
+                        <option value="2">女</option>
+                    </select><div class="layui-unselect layui-form-select"><div class="layui-select-title"><input type="text" placeholder="请选择" value="不限" readonly="" class="layui-input layui-unselect"><i class="layui-edge"></i></div><dl class="layui-anim layui-anim-upbit"><dd lay-value="0" class="layui-this">不限</dd><dd lay-value="1" class="">男</dd><dd lay-value="2" class="">女</dd></dl></div>
+                </div>
+            </div>
+            <div class="layui-inline">
+                <button class="layui-btn layuiadmin-btn-useradmin" lay-submit="" lay-filter="LAY-user-front-search">
+                    <i class="layui-icon layui-icon-search layuiadmin-button-btn"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+</script>
+
+<script type="text/html" id="cityTpl">
+    <select id="demoCity1" class="layui-border" lay-ignore>
+        <option value="浙江杭州">浙江杭州</option>
+        <option value="江西南昌">江西南昌</option>
+        <option value="湖北武汉">湖北武汉</option>
+    </select>
+</script>
+
+<script type="text/html" id="barDemo">
+    <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
+    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+</script>
+<script th:src="@{/layui/layui.js}"></script>
+<script th:online="none">
+    layui.use(['table'], function(){
+        var table = layui.table;
+
+        // 创建渲染实例
+        table.render({
+            elem: '#test'
+            ,url:'demo.json' // 此处为静态模拟数据，实际使用时需换成真实接口
+            ,toolbar: '#toolbarDemo'
+            ,defaultToolbar: ['filter', 'exports', 'print', {
+                title: '帮助'
+                ,layEvent: 'LAYTABLE_TIPS'
+                ,icon: 'layui-icon-tips'
+            }]
+            //<button class="layui-btn layuiadmin-btn-useradmin" data-type="batchdel">删除</button>
+
+
+            ,height: 'full-200' // 最大高度减去其他容器已占有的高度差
+            ,cellMinWidth: 80
+            ,totalRow: true // 开启合计行
+            ,page: true
+            ,cols: [
+                [
+                    {type: 'checkbox', fixed: 'left'}
+                    ,{field:'id', fixed: 'left', width:80, title: 'ID', sort: true, totalRowText: '合计：'}
+                    ,{field:'username', width:120, title: '用户名'}
+                    ,{field:'email', title:'邮箱 <i class="layui-icon layui-icon-email"></i>', hide: 0, width:150, edit: 'text'}
+                    ,{field:'phone', title:'手机', width: 130}
+                    ,{field:'role', title:'角色', width: 130}
+                    ,{field:'sex', width:100, title: '性别', sort: true}
+                    ,{field:'ip', title:'IP', width: 120}
+                    ,{field:'joinTime', title:'加入时间', width: 190}
+                    ,{field:'auditStatus', title:'审核状态', width: 120}
+                    ,{fixed: 'right', title:'操作', width: 125, minWidth: 125, toolbar: '#barDemo'}
+                ]
+            ]
+            ,done: function(){
+                var id = this.id;
+
+            }
+            ,error: function(res, msg){
+                console.log(res, msg)
+            }
+        });
+
+        // 工具栏事件
+        table.on('toolbar(test)', function(obj){
+            var id = obj.config.id;
+            var checkStatus = table.checkStatus(id);
+            var othis = lay(this);
+            switch(obj.event){
+                case 'getCheckData':
+                    var data = checkStatus.data;
+                    layer.alert(layui.util.escape(JSON.stringify(data)));
+                    break;
+                case 'getData':
+                    var getData = table.getData(id);
+                    console.log(getData);
+                    layer.alert(layui.util.escape(JSON.stringify(getData)));
+                    break;
+                case 'isAll':
+                    layer.msg(checkStatus.isAll ? '全选': '未全选')
+                    break;
+                case 'multi-row':
+                    table.reload('test', {
+                        // 设置行样式，此处以设置多行高度为例。若为单行，则没必要设置改参数 - 注：v2.7.0 新增
+                        lineStyle: 'height: 95px;'
+                    });
+                    layer.msg('即通过设置 lineStyle 参数可开启多行');
+                    break;
+                case 'default-row':
+                    table.reload('test', {
+                        lineStyle: null // 恢复单行
+                    });
+                    layer.msg('已设为单行');
+                    break;
+                case 'LAYTABLE_TIPS':
+                    layer.alert('Table for layui-v'+ layui.v);
+                    break;
+            };
+        });
+
+        //触发单元格工具事件
+        table.on('tool(test)', function(obj){ // 双击 toolDouble
+            var data = obj.data;
+            //console.log(obj)
+            if(obj.event === 'del'){
+                layer.confirm('真的删除行么', function(index){
+                    obj.del();
+                    layer.close(index);
+                });
+            } else if(obj.event === 'edit'){
+                layer.open({
+                    title: '编辑',
+                    type: 1,
+                    area: ['80%','80%'],
+                    content: '<div style="padding: 16px;">自定义表单元素</div>'
+                });
+            }
+        });
+
+        //触发表格复选框选择
+        table.on('checkbox(test)', function(obj){
+            console.log(obj)
+        });
+
+        //触发表格单选框选择
+        table.on('radio(test)', function(obj){
+            console.log(obj)
+        });
+
+        // 行单击事件
+        table.on('row(test)', function(obj){
+            //console.log(obj);
+            //layer.closeAll('tips');
+        });
+        // 行双击事件
+        table.on('rowDouble(test)', function(obj){
+            console.log(obj);
+        });
+
+        // 单元格编辑事件
+        table.on('edit(test)', function(obj){
+            var field = obj.field //得到字段
+                ,value = obj.value //得到修改后的值
+                ,data = obj.data; //得到所在行所有键值
+
+            var update = {};
+            update[field] = value;
+            obj.update(update);
+        });
+    });
+</script>
+
+</body>
+</html>

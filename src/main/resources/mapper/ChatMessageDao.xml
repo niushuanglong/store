@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.niu.web.business.mapper.ChatMessageDao">
+
+	<!-- 可根据自己的需求，是否要使用 -->
+    <resultMap type="com.niu.web.business.pojo.ChatMessage" id="tCharMessageMap">
+        <result property="id" column="id"/>
+        <result property="createTime" column="create_time"/>
+        <result property="ipAddress" column="ip_address"/>
+        <result property="lastUpdateTime" column="last_update_time"/>
+        <result property="content" column="content"/>
+        <result property="msgType" column="msg_type"/>
+        <result property="receiveDate" column="receive_date"/>
+        <result property="receiveUserId" column="receive_user_id"/>
+        <result property="sendUserId" column="send_user_id"/>
+    </resultMap>
+    <select id="LookTwoUserMsg" resultType="com.niu.web.business.pojo.ChatMessage">
+        select * from t_char_message where
+            send_user_id=#{userId} and receive_user_id=#{receiveUserId} or
+            send_user_id=#{receiveUserId} and receive_user_id=#{userId}
+    </select>
+
+
+</mapper>

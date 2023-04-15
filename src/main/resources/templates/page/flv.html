@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>flv视频流播放</title>
+    <style>
+        body {
+            width: 50%;
+            height: 50%;
+            overflow: hidden;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+<video id="video" controls></video>
+<script src="http://bilibili.github.io/flv.js/dist/flv.js"></script>
+<script>
+    //推流一定是rtmp 拉流可以是hls 或者rtmp
+//rtmp拉流 http://192.168.1.175/flv?port=1935&app=src&stream=room
+//http://192.168.1.175/live1(nginx里的配置)/room.flv
+//hls拉流 http://192.168.1.175/hls1(nginx里的配置)/room.m3u8
+//这个不如上边hls推流快所以采用live拉流 http://192.168.1.175/flv?port=1935&app=hls1&stream=room
+    var video = document.getElementById('video');
+    var videoSrc = 'http://192.168.1.175/flv?port=1935&app=src&stream=room';
+    if (flvjs.isSupported()) {
+        var flvPlayer = flvjs.createPlayer({
+            type: 'flv',
+            url: videoSrc
+        });
+        flvPlayer.attachMediaElement(video);
+        flvPlayer.load();
+        flvPlayer.play();
+    }
+</script>
+
+</body>
+
+</html>

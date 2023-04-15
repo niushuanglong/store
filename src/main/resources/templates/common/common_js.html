@@ -1,0 +1,22 @@
+<layui-vue th:fragment="commonJs">
+    <script th:src="@{/static/chat/js/vue.js}"></script>
+    <script th:inline="javascript">
+        var basePath = [[${#httpServletRequest.getScheme() + "://" + #httpServletRequest.getServerName() + ":" + #httpServletRequest.getServerPort() + #httpServletRequest.getContextPath()}]];
+        var socketPath = [[${#httpServletRequest.getServerName() + ":" + #httpServletRequest.getServerPort() + #httpServletRequest.getContextPath()}]];
+        //var userid = [[${session.userid}]];
+        //这个是rtmp推流应用名称src 服务器nginx配置
+        var appName='src';
+        var rtmpPort =1935;
+        var rtmpPath ='http://192.168.1.175:80';
+        var userid=JSON.parse(localStorage.getItem("userInfo")).id;
+        var username=JSON.parse(localStorage.getItem("userInfo")).username;
+        var userInfo=JSON.parse(localStorage.getItem("userInfo"));
+        var stream='room';//也是推流时候的密码 例如 http://192.168.1.175/live1/这个密码"room.flv"
+
+    </script>
+    <script type="application/javascript" th:src="@{/layui/layui.js}"></script>
+    <script th:src="@{/layui/js/lay-config.js}"></script>
+    <script type="application/javascript" th:src="@{/lib/jquery-3.4.1/jquery-3.4.1.min.js}"></script>
+    <script src="https://cdn.bootcss.com/sockjs-client/1.1.4/sockjs.min.js"></script>
+    <!--<script src="https://vjs.zencdn.net/7.0.3/video.js"></script>-->
+</layui-vue>

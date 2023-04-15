@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.niu.web.business.mapper.UserMapper">
+    <!-- 验证登录 -->
+<!--    <select id="getUser" resultMap="userinfoMap" parameterType="java.lang.String">-->
+<!--        &lt;!&ndash; 用include标签引入sql片段，refid写定义sql片段的id，where标签不要写在片段里 &ndash;&gt;-->
+<!--        select * from user-->
+<!--            <where>-->
+<!--                username=#{username} and password=#{password}-->
+<!--            </where>-->
+<!--    </select>-->
+<!--    <resultMap type="com.niu.web.business.pojo.User" id="userinfoMap">-->
+<!--        <result column="create_time" property="createTime"/>-->
+<!--        <result column="nick_name" property="nickName"/>-->
+<!--        <result column="locked_time" property="lockedTime"/>-->
+<!--        <result column="username" property="username"/>-->
+<!--        <result column="password" property="password"/>-->
+<!--        <result column="last_update_time" property="lastUpdateTime"/>-->
+<!--        <result column="pwd_error" property="pwdError"/>-->
+<!--        <result column="ip_address" property="ipAddress"/>-->
+<!--    </resultMap>-->
+</mapper>
