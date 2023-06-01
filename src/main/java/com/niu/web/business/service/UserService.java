@@ -35,7 +35,7 @@ public interface UserService extends IService<User> {
      * @param dto
      * @return
      */
-    JsonResult addUser(UserDTO dto);
+    JsonResult registerUser(UserDTO dto);
 
     /**
      * 查询用户
@@ -50,4 +50,11 @@ public interface UserService extends IService<User> {
      * @return
      */
     JsonResult delUser(String userId);
+
+    /**
+     * 修改用户基本资料
+     * @param dto
+     * @return
+     */
+    JsonResult changeUserInfo(UserDTO dto);
 }

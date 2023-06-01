@@ -9,11 +9,14 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.web.multipart.MultipartFile;
+import sun.misc.BASE64Encoder;
 
 import java.io.*;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.Statement;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.UUID;
 
 /**
@@ -53,6 +56,20 @@ public class FileUtils {
         }
         return savePath;
     }
+
+    //文件转Base64
+    public String toBase64(MultipartFile multipartFile) {
+        String map;
+        ByteArrayOutputStream os = new ByteArrayOutputStream();
+        try {
+            BASE64Encoder base64Encoder =new BASE64Encoder();
+            map= base64Encoder.encode(multipartFile.getBytes());
+        } catch (IOException e) {
+            return "图片转换失败";
+        }
+        return map;
+    }
+
     public static String getOSName(){
         String savePath;
         //如果是windows系统
@@ -74,7 +91,7 @@ public class FileUtils {
         String savePath=System.getProperty("os.name").contains("Win")?Constant.RESOURCE_WINDOWS_IMAGE_PATH.getId():Constant.RESOURCE_LINUX_IMAGE_PATH.getId();
         if (StringUtils.isNotBlank(urlPath)) savePath=urlPath;
         //后缀名
-        String extension = FilenameUtils.getExtension(file.getOriginalFilename());
+        String extension = "."+FilenameUtils.getExtension(file.getOriginalFilename());
         String uuidFilename = UUID.randomUUID()+extension;
         File file1 = new File( savePath+ uuidFilename);
         InputStream in=null;

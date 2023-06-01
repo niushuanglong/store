@@ -32,6 +32,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.File;
 import java.time.Instant;
 import java.time.LocalDate;
+import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
@@ -78,10 +79,17 @@ public class ChatMessageServiceImpl extends ServiceImpl<ChatMessageDao, ChatMess
         List<String> userIds = chatFriends.stream().map(c -> c.getUserId()).collect(Collectors.toList());
         if (fUserIds==null&&fUserIds.size()==0 && userIds.size()==0)return new JsonResult();
         fUserIds.addAll(userIds);
+        if (userIds.isEmpty()) {
+            return new JsonResult();
+        }
         List<User> users = userMapper.selectBatchIds(fUserIds);
         List<ChatFriendsDTO> collect = users.stream().filter(u->!u.getId().equals(userId)).map(user -> {
             Attachment attachment = attachmentDao.selectById(attachmentDao.findAttachmentByTypeUserId(userId,Constant.SAVE_TYPE_AVATAR.getId(),Constant.FILE_CATEGORY_IMAGE.getId()));
-            return new ChatFriendsDTO(null, user.getId(), Constant.RESOURCE_WINDOWS_IMAGE_PATH.getName() + "/" + attachment.getName(), user.getUsername());
+            String name="";
+            if (attachment!=null){
+                name = Constant.RESOURCE_WINDOWS_IMAGE_PATH.getName() + "/" + attachment.getName();
+            }
+            return new ChatFriendsDTO(null, user.getId(),name , user.getUsername());
         }).collect(Collectors.toList());
         return new JsonResult(collect);
     }
@@ -111,6 +119,10 @@ public class ChatMessageServiceImpl extends ServiceImpl<ChatMessageDao, ChatMess
             urlPath=Constant.RESOURCE_LINUX_CHAT_IMG.getId();
             src=Constant.RESOURCE_LINUX_CHAT_IMG.getName();
         }
+        if(FilenameUtils.getExtension(file.getOriginalFilename()).equals("jpg")){
+
+        }
+        //没有做判断什么类型的文件可以上传
         String filename = FileUtils.saveFile(file, urlPath);
         JSONObject jsonObject=new JSONObject();
         jsonObject.put("src",src +File.separator+ filename);
@@ -120,7 +132,7 @@ public class ChatMessageServiceImpl extends ServiceImpl<ChatMessageDao, ChatMess
     @Override
     public JsonResult queryUser(String username,String userId) {
         QueryWrapper<User> queryWrapper = new QueryWrapper();
-        queryWrapper.eq("username", username);
+        queryWrapper.like("username", username);
         //不需要查询自己 不能添加自己为好友!
         queryWrapper.ne("id",userId);
         User user = userMapper.selectOne(queryWrapper);
@@ -131,8 +143,10 @@ public class ChatMessageServiceImpl extends ServiceImpl<ChatMessageDao, ChatMess
         QueryWrapper<Attachment> wrapper = new QueryWrapper<>();
         wrapper.eq("user_Id",userId).eq("category",Constant.FILE_CATEGORY_IMAGE.getId());
         List<Attachment> attachments = attachmentDao.selectList(wrapper);
-        Attachment attachment = attachments.get(0);
-        userDTO.setImg(FileUtils.getOSName()+ File.separator +attachment.getName());
+        if (!attachments.isEmpty()){
+            Attachment attachment = attachments.get(0);
+            userDTO.setAvatar(FileUtils.getOSName()+ File.separator +attachment.getName());
+        }
 //        if (attachment!=null){
 //            AttachmentValObj attachmentValObj = new AttachmentAssembler().formAttachmentDTO(attachment);
 //            userDTO.setAttachmentValObj(attachmentValObj);

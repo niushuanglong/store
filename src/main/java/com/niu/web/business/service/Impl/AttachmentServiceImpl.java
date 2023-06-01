@@ -75,8 +75,9 @@ public class AttachmentServiceImpl extends ServiceImpl<AttachmentDao, Attachment
         } finally {
             FileUtils.clean(outputStream);
         }
+        String base64 = new FileUtils().toBase64(file);
         Attachment attachment = new Attachment(uuidFileName,Constant.SAVE_TYPE_AVATAR.getId(),Constant.RESOURCE_WINDOWS_IMAGE_PATH.getName(),diskPath,
-                fileSize,null, contentType, category,1,"",userId);
+                fileSize,base64, contentType, category,1,"",userId);
         attachmentDao.insert(attachment);
         return new JsonResult("上传成功");
     }
@@ -88,7 +89,7 @@ public class AttachmentServiceImpl extends ServiceImpl<AttachmentDao, Attachment
         map.put("category",Constant.FILE_CATEGORY_IMAGE.getId());
         queryWrapper.allEq(map);
         List<Attachment> list = attachmentDao.selectList(queryWrapper);
-        List<String> urlList = list.stream().filter(Objects::nonNull).map(l -> l.getBaseDir() + l.getName()).collect(Collectors.toList());
+        List<String> urlList = list.stream().filter(Objects::nonNull).map(l -> l.getBaseDir() +"/"+ l.getName()).collect(Collectors.toList());
         return new JsonResult(urlList);
     }
 

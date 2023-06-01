@@ -461,39 +461,39 @@ function sendNormalMsg() {
 }
 
 //发送指定人消息
-function sendGroupMsg() {
-    let layedit = layui.layedit;
-    let message = layedit.getContent(groupEidt);
-    //没有标签的内容
-    let notTagMessage = layedit.getText(groupEidt);
-
-    let contentList= $(message);
-    //判断是否包含表情，如果包含表情，则直接发送消息
-    let isImg = false;
-    for(let index=0; index < contentList.length;index++){
-        contentList[index].nodeName === "IMG" ? isImg = true: 0;
-    }
-
-    if (!isImg && (message.length == 0 || notTagMessage.length == 0 )) {
-        layer.msg("请输入发送的内容", {
-            time: 2500,
-            icon: 2,
-            offset: "300px"
-        });
-        return;
-    }
-    // 将内容设置为空
-    layedit.setContent(groupEidt, "", false);
-    var object = new Object();
-    object["reciveGroupId"] = $("#msgcontent_group").attr("data-group-id");
-    object["msgtype"] = 0;
-    object["reciveObject"] = "G";
-    object["sendtext"] =message;
-    var jsonData = JSON.stringify(object);
-    websocket.send(jsonData);//websocket发送数据
-    appendGroupmsg("0", actuserid, "G" ,userid, message);//vue追加聊天数据
-    document.getElementById("msg_end_group").scrollIntoView();
-}
+// function sendGroupMsg() {
+//     let layedit = layui.layedit;
+//     let message = layedit.getContent(groupEidt);
+//     //没有标签的内容
+//     let notTagMessage = layedit.getText(groupEidt);
+//
+//     let contentList= $(message);
+//     //判断是否包含表情，如果包含表情，则直接发送消息
+//     let isImg = false;
+//     for(let index=0; index < contentList.length;index++){
+//         contentList[index].nodeName === "IMG" ? isImg = true: 0;
+//     }
+//
+//     if (!isImg && (message.length == 0 || notTagMessage.length == 0 )) {
+//         layer.msg("请输入发送的内容", {
+//             time: 2500,
+//             icon: 2,
+//             offset: "300px"
+//         });
+//         return;
+//     }
+//     // 将内容设置为空
+//     layedit.setContent(groupEidt, "", false);
+//     var object = new Object();
+//     object["reciveGroupId"] = $("#msgcontent_group").attr("data-group-id");
+//     object["msgtype"] = 0;
+//     object["reciveObject"] = "G";
+//     object["sendtext"] =message;
+//     var jsonData = JSON.stringify(object);
+//     websocket.send(jsonData);//websocket发送数据
+//     appendGroupmsg("0", actuserid, "G" ,userid, message);//vue追加聊天数据
+//     document.getElementById("msg_end_group").scrollIntoView();
+// }
 
 
 function sendaudio(message) {

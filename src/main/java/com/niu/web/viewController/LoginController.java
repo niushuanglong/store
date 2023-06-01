@@ -1,6 +1,7 @@
 package com.niu.web.viewController;
 
 import com.niu.web.business.dto.LoginParamDTO;
+import com.niu.web.business.dto.UserDTO;
 import com.niu.web.business.service.UserService;
 import com.niu.web.business.service.ValidateCodeService;
 import com.niu.web.business.utils.JsonResult;
@@ -32,10 +33,17 @@ public class LoginController {
     private ValidateCodeService validateCodeService;
 
     @RequestMapping(value = "/login",method = RequestMethod.POST)
-    @ApiOperation(value = "校验用户",httpMethod = "POST")
+    @ApiOperation(value = "校验用户进行登录操作",httpMethod = "POST")
     public JsonResult checkLogin(@RequestBody LoginVO vo, HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         return userService.checkLogin(vo,request,response);
     }
+
+    @ApiOperation(value = "新增用户",httpMethod = "POST")
+    @RequestMapping(value = "/registerUser",method = RequestMethod.POST)
+    public JsonResult addUser(@RequestBody UserDTO dto, HttpServletResponse response, HttpServletRequest request){
+        return userService.registerUser(dto);
+    }
+
     /**
      * 生成验证码
      */

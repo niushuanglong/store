@@ -21,7 +21,7 @@ import java.util.List;
         name = "t_char_message",
         indexes={
                 @Index(name="idx_T_CHAR_MESSAGE1",columnList="sendUserId"),
-                @Index(name="idx_T_CHAR_MESSAGE1",columnList="receiveUserId"),
+                @Index(name="idx_T_CHAR_MESSAGE2",columnList="receiveUserId"),
         }
 )
 @TableName("t_char_message")

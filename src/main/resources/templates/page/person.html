@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta charset="utf-8">
-    <title>示例演示</title>
+    <title>网站用户</title>
     <meta name="renderer" content="webkit">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -53,9 +53,6 @@
                     </div>
                 </div>
             </div>
-            <div class="layui-inline">
-                <input class="layui-input" name="id" id="demoReload" autocomplete="off">
-            </div>
             <a class="layui-btn"data-type="reload" lay-submit lay-filter="search" >搜索</a>
         </div>
     </div>
@@ -80,13 +77,12 @@
 </script>
 <script th:src="@{/layui/layui.js}"></script>
 <script th:online="none">
-    layui.use(['table','form','ajaxError'], function(){
+    layui.use(['table','form'], function(){
         var table = layui.table,
             $ = layui.jquery,
             form  = layui.form;
         $(document).ready(function(){
             initUser("");
-            debugger
             // 登录过期的时候，跳出ifram框架
             //if (top.location != self.location) top.location = self.location;
 
@@ -97,7 +93,6 @@
             var email=document.getElementById("email").value;
             var gender=document.getElementById("gender").value;
             var datainfo={username:username,id:id,email:email,gender:gender};
-            debugger
             initUser(datainfo);
             return false;
         });
@@ -130,7 +125,7 @@
                         ,{field:'email', title:'邮箱 <i class="layui-icon layui-icon-email"></i>', hide: 0, width:150, edit: 'text'}
                         ,{field:'phone', title:'手机', width: 120}
                         ,{field:'gender', width:80, title: '性别', sort: true,templet:function (d) {
-                            if(d.gender==1) return "男";else if(d.gender==0) return "女";else "不限";
+                            if(d.gender==1) return "男";else if(d.gender==0) return "女";else return "";
                         }}
                         ,{field:'city', width:115, title: '城市', minWidth:115, templet: '#cityTpl', exportTemplet: function(d, obj){
                             //console.log(obj)
@@ -194,17 +189,17 @@
         //触发单元格工具事件
         table.on('tool(test)', function(obj){ // 双击 toolDouble
             var data = obj.data;
-            //console.log(obj)
             if(obj.event === 'del'){
+                console.log(JSON.stringify(data.id))
                 layer.confirm('真的删除行么', function(index){
                     obj.del();
                     $.ajax({
                         url:"/api/user/delUser",
-                        data:JSON.stringify(data.field),
+                        data:{userId:data.id},
                         //请求的类型
                         contentType: "application/json;charset=utf-8", // 设置请求头
                         dataType:"json",
-                        type:"post",
+                        type:"get",
                         success(resp){
                             if (resp.code==100){
                                 layer.alert(resp.msg)

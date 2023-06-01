@@ -31,7 +31,7 @@ public class Attachment extends BaseInfo {
     @Column(updatable=false)
     @Lob
     @Basic(fetch=FetchType.LAZY)
-	private Blob dataBlob; //数据库存储时的文件数据
+	private String dataBlob; //数据库存储时的文件数据
 	private String contentType; //文件格式
 	private String userId;//用户id
 	private String category; //附件归类
@@ -54,7 +54,7 @@ public class Attachment extends BaseInfo {
 	public long getFileSize() {
 		return fileSize;
 	}
-	public Blob getDataBlob() {
+	public String getDataBlob() {
 		return dataBlob;
 	}
 	public String getContentType() {
@@ -80,7 +80,7 @@ public class Attachment extends BaseInfo {
     }
 
 
-	public Attachment(String name,String saveType, String baseDir, String diskPath, long fileSize, Blob dataBlob, String contentType, String category,
+	public Attachment(String name,String saveType, String baseDir, String diskPath, long fileSize, String dataBlob, String contentType, String category,
 					  Integer version, String tmpFilePath,String userId) {
 		this.name = name;
 		this.saveType = saveType;

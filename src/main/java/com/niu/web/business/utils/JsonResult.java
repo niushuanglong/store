@@ -37,9 +37,9 @@ public class JsonResult<T> implements Serializable {
      */
     private Object data;
 
-    private Map<String,Object> otherData;
+    private OtherData otherData;
 
-    public JsonResult(Map<String,Object> otherData) {
+    public JsonResult(OtherData otherData) {
         this.otherData = otherData;
     }
     public JsonResult(String msg) {
@@ -49,7 +49,10 @@ public class JsonResult<T> implements Serializable {
     public JsonResult(Object data) {
         this.data = data;
     }
-
+    public JsonResult(Object data,OtherData otherData) {
+        this.data = data;
+        this.otherData=otherData;
+    }
     public JsonResult(Throwable e) {
         this.code = 400;
         this.msg = e.getMessage();
@@ -60,7 +63,7 @@ public class JsonResult<T> implements Serializable {
         this.data = data;
         this.count=count;
     }
-    public JsonResult(int code, String msg, Object data,int count,Map<String,Object> otherData) {
+    public JsonResult(int code, String msg, Object data,int count,OtherData otherData) {
         this.code = code;
         this.msg = msg;
         this.data = data;

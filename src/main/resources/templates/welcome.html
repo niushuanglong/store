@@ -215,41 +215,6 @@
                                 刷新页面会保留当前的窗口，并且会定位当前窗口对应左侧菜单栏。<br>
                             </div>
                         </div>
-                        <div class="layuimini-notice">
-                            <div class="layuimini-notice-title">新增系统404模板</div>
-                            <div class="layuimini-notice-extra">2019-07-11 12:57</div>
-                            <div class="layuimini-notice-content layui-hide">
-                                界面足够简洁清爽。<br>
-                            </div>
-                        </div>
-                        <div class="layuimini-notice">
-                            <div class="layuimini-notice-title">新增treetable插件和菜单管理样式</div>
-                            <div class="layuimini-notice-extra">2019-07-05 14:28</div>
-                            <div class="layuimini-notice-content layui-hide">
-                                一个接口几行代码而已直接初始化整个框架，无需复杂操作。<br>
-                            </div>
-                        </div>
-                        <div class="layuimini-notice">
-                            <div class="layuimini-notice-title">修改logo缩放问题</div>
-                            <div class="layuimini-notice-extra">2019-07-04 11:02</div>
-                            <div class="layuimini-notice-content layui-hide">
-                                支持多tab，可以打开多窗口。<br>
-                            </div>
-                        </div>
-                        <div class="layuimini-notice">
-                            <div class="layuimini-notice-title">修复左侧菜单缩放tab无法移动</div>
-                            <div class="layuimini-notice-extra">2019-06-17 11:55</div>
-                            <div class="layuimini-notice-content layui-hide">
-                                支持无限级菜单和对font-awesome图标库的完美支持。<br>
-                            </div>
-                        </div>
-                        <div class="layuimini-notice">
-                            <div class="layuimini-notice-title">修复多模块菜单栏展开有问题</div>
-                            <div class="layuimini-notice-extra">2019-06-13 14:53</div>
-                            <div class="layuimini-notice-content layui-hide">
-                                失效以及报错菜单无法直接打开，并给出弹出层提示完美的线上用户体验。<br>
-                            </div>
-                        </div>
                     </div>
                 </div>
 
@@ -327,7 +292,6 @@
                 // 通过XMLHttpRequest取得响应头，sessionstatus
                 var sessionstatus = XMLHttpRequest.getResponseHeader("sessionstatus");
                 if (sessionstatus == "TIMEOUT") {
-                    debugger
                     var win = window;
                     while (win != win.top){
                         win = win.top;
@@ -336,8 +300,12 @@
                 }
             },
             error:function (e){
-            console.log(JSON.parse(e.responseText).message)
-                //return layer.msg(title, {icon: 2, shade: this.shade, scrollbar: false, time: 3000, shadeClose: true});
+                var  message=JSON.parse(e.responseText).message;
+                alert(message)
+                if (message===("登录已过期，请重新登录!")){
+                    top.location="login.html";
+                }
+                console.log(JSON.parse(e.responseText).message)
             }
     });
 
@@ -350,22 +318,14 @@
             async : false,
             //contentType: "application/json;charset=utf-8", // 设置请求头
             success(resp){
-                debugger
-                if (resp.code=="200"){
-
+                if (resp.code=="100"){
+                    for (let i=0;i<resp.data.length;i++){
+                        var trObj =document.createElement("div");
+                        trObj.innerHTML = "<span><img style='background-position: center center' src='"+resp.data[i]+"'tppabs='"+resp.data[i]+"' alt=\"这是美女\" ></span>";
+                        document.getElementById("carousel-img").appendChild(trObj);
+                    }
                 }
-                //if (resp)
-                // for (let i=0;i<resp.data.length;i++){
-                //     var trObj =document.createElement("div");
-                //     trObj.innerHTML = "<span><img style='background-position: center center' src='"+resp.data[i]+"'tppabs='"+resp.data[i]+"' alt=\"这是美女\" ></span>";
-                //     document.getElementById("carousel-img").appendChild(trObj);
-                // }
             },
-            //错误
-            // error(res){
-            //     console.log(res)
-            //     layer.msg('用户信息错误!请重新填写.');
-            // }
         })
         layui.use(['layer', 'miniTab','carousel','form','ajaxError'], function () {
             var $ = layui.jquery,
@@ -374,7 +334,6 @@
                 form = layer.form,
                 ajaxError= layer.ajaxError,
                 carousel = layui.carousel;
-
             //图片轮播
             carousel.render({
                 elem: '#testCarousel'

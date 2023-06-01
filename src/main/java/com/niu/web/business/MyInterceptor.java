@@ -27,7 +27,7 @@ public class MyInterceptor implements HandlerInterceptor {
         try {
             //统一拦截（查询当前session是否存在user）(这里user会在每次登陆成功后，写入session)
             AccessTokenUserDTO tokenUserDTO=(AccessTokenUserDTO)request.getSession().getAttribute(Constant.ACCESS_USER.getId());
-            if(tokenUserDTO!=null){
+            if(tokenUserDTO==null){
                 logger.info("用户未登录");
                 requestDirect(request, response);
                 return false;

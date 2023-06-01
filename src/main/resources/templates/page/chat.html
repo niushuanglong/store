@@ -60,9 +60,8 @@
                                             @click="selectStyle (item,item.fuserId)"
                                             :class="{'active':item.active,'unactive':!item.active,'leftnickename':true}">
                                             <p>
-                                                <img :src=item.avatar style="border-radius:50%;height:60px;">
-                                                <span :class="{'layui-badge-dot':item.newnote,'':!item.newnote,'newnoteid':true}"></span>
-                                                {{item.username}}
+                                                <img :src=item.avatar style="border-radius:40%;height:40px;">
+                                                <span :class="{'layui-badge-dot':item.newnote,'':!item.newnote,'newnoteid':true}">{{item.username}}</span>
                                             </p>
                                         </li>
                                     </ol>
@@ -230,7 +229,7 @@
                             <div style="display:none;" id="userinfo">
                                 <div class="single-member effect-1">
                                     <div>
-                                        <img :src="userinfo.img" style="width:100px" alt="Member" class="layui-circle">
+                                        <img :src="userinfo.img" style="width:100px"  class="layui-circle">
                                     </div>
                                     <div class="member-info">
                                         <h3>{{userinfo.username}}</h3>

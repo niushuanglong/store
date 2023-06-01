@@ -64,14 +64,14 @@ public class UserServiceImpl extends ServiceImpl<UserMapper,User> implements Use
             return new JsonResult("未查询到用户!请重新输入!");
         }
         UserDTO userDTO = new UserAssembler().fromUserDTO(users.get(0));
-        Map<String, Object> otherData = new HashMap<>();
+        OtherData otherData = new OtherData();
         otherData.put("token",accessTokenService.createAccessToken(request, users.get(0)));
-        return new JsonResult(userDTO).setOtherData(otherData);
+        return new JsonResult(userDTO,otherData);
     }
 
 
     @Override
-    public JsonResult addUser(UserDTO dto) {
+    public JsonResult registerUser(UserDTO dto) {
         QueryWrapper queryWrapper = new QueryWrapper();
         queryWrapper.eq("username", dto.getUsername());
         User user = userMapper.selectOne(queryWrapper);
@@ -82,7 +82,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper,User> implements Use
         dto.setCreateTime(new Date());
         dto.setPwdError(0);
         dto.setLastUpdateTime(new Date());
-        dto.setIpAddress(IPUtils.getIpAddr());
+        dto.setIpAddress(IPUtils.getIpAddr());//password -> 207cf410532f92a47dee245ce9b11ff71f578ebd763eb3bbea44ebd043d018fb
         User userInfo=userAssembler.toUser(dto);
         int insert = userMapper.insert(userInfo);
         if (insert!=1){
@@ -93,9 +93,6 @@ public class UserServiceImpl extends ServiceImpl<UserMapper,User> implements Use
 
     @Override
     public JsonResult findUserInfo(AccessTokenUserDTO accessToken,UserQueryVO vo, Model model) {
-//        if (accessToken==null|| accessToken.getExpireTime().compareTo(new Date())<-1){
-//            throw new RuntimeException("登录超时!");
-//        }
         QueryWrapper queryWrapper = queryUserCondition(vo);
         Page<User> userPage = Page.of(vo.getPageNo(),vo.getPageSize());
         userMapper.selectPage(userPage, queryWrapper);
@@ -107,11 +104,27 @@ public class UserServiceImpl extends ServiceImpl<UserMapper,User> implements Use
 
     @Override
     public JsonResult delUser(String userId) {
-        if (StringUtils.isNotBlank(userId)){
+        if (StringUtils.isBlank(userId)){
             throw new RuntimeException("用户id错误!");
         }
         userMapper.deleteById(userId);
         return new JsonResult("删除成功!");
+    }
+
+    @Override
+    public JsonResult changeUserInfo(UserDTO dto) {
+        //如果新密码不为空就是修改密码 否则是修改基本信息
+        User user = userMapper.selectById(dto.getId());
+        if (StringUtils.isNotBlank(dto.getNewPassword())){
+            if (!user.getPassword().equals(dto.getPassword())){
+                throw new RuntimeException("旧密码错误!请重新输入");
+            }
+            user.updatePassword(dto.getNewPassword());
+            userMapper.updateById(user);
+        }
+        user.updateInfo(dto.getNickname(),dto.getMotto(),dto.getPhone(),dto.getEmail(),dto.getAvatar());
+        userMapper.updateById(user);
+        return new JsonResult(new UserAssembler().fromUserDTO(userMapper.selectById(dto.getId())));
     }
 
     private QueryWrapper queryUserCondition(UserQueryVO vo){

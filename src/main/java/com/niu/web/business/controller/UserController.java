@@ -37,12 +37,6 @@ public class UserController {
     @Autowired
     private UserService userService;
 
-    @ApiOperation(value = "新增用户",httpMethod = "POST")
-    @RequestMapping(value = "/addUser",method = RequestMethod.POST)
-    public JsonResult addUser(@RequestBody UserDTO dto, HttpServletResponse response, HttpServletRequest request){
-        return userService.addUser(dto);
-    }
-
     @ApiOperation(value = "查询用户信息",httpMethod = "POST")
     @RequestMapping(value = "/findUserInfo",method = RequestMethod.POST)
     public JsonResult findUserInfo(@RequestBody UserQueryVO vo, HttpServletResponse response, HttpServletRequest request, Model model){
@@ -54,6 +48,12 @@ public class UserController {
     public JsonResult delUser(String userId, HttpServletRequest request){
         AccessTokenUserDTO accessToken = new AccessTokenAssembler().getAccessTokenUserFromReq(request);
         return userService.delUser(userId);
+    }
+    @ApiOperation(value = "修改用户信息",httpMethod = "POST")
+    @RequestMapping(value = "/changeUserInfo",method = RequestMethod.POST)
+    public JsonResult changeUserInfo(@RequestBody UserDTO dto, HttpServletRequest request){
+        AccessTokenUserDTO accessToken = new AccessTokenAssembler().getAccessTokenUserFromReq(request);
+        return userService.changeUserInfo(dto);
     }
 
 }

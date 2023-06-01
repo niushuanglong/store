@@ -172,16 +172,15 @@
                 contentType: "application/json;charset=utf-8", // 设置请求头
                 success(resp){
                     if (resp.code==100){
-                        var router = layui.router();
                         //请求成功后，写入 access_token
-                        layui.data(layer.config().tableName, {
-                            key: "token",
-                            value: resp.data.token
-                        });
+                        localStorage.setItem("token",resp.otherData.token)
+                        // layui.data(layer.config().tableName, {
+                        //     key: "token",
+                        //     value: resp.otherData.token
+                        // });
                         layer.msg('登录成功', function () {
-                            //.statusText !== 'success'
                             localStorage.setItem("userInfo",JSON.stringify(resp.data))
-                            console.log(JSON.parse(localStorage.getItem("userInfo")))
+                            //console.log(JSON.parse(localStorage.getItem("userInfo")))
                             document.location.href="index.html";
                         });
                     }

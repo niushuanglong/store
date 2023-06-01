@@ -64,7 +64,7 @@
                     <dl class="layui-nav-child">
                         <dd>
                             <a href="javascript:;" layuimini-content-href="page/user-setting.html" data-title="基本资料" data-icon="fa fa-gears">基本资料<span class="layui-badge-dot"></span></a>
-                        </dd>///
+                        </dd>
                         <dd>
                             <a href="javascript:;" layuimini-content-href="page/user-password.html" data-title="修改密码" data-icon="fa fa-gears">修改密码</a>
                         </dd>
@@ -130,6 +130,29 @@
 
 <layui-vue th:replace="common/common_js :: commonJs"></layui-vue>
 <script>
+    //设置ajax请求完成后运行的函数,
+    $.ajaxSetup( {
+        //设置ajax请求结束后的执行动作
+        complete :function(XMLHttpRequest, textStatus) {
+            // 通过XMLHttpRequest取得响应头，sessionstatus
+            var sessionstatus = XMLHttpRequest.getResponseHeader("sessionstatus");
+            if (sessionstatus == "TIMEOUT") {
+                var win = window;
+                while (win != win.top){
+                    win = win.top;
+                }
+                win.location.href= XMLHttpRequest.getResponseHeader("CONTEXTPATH");
+            }
+        },
+        error:function (e){
+            var  message=JSON.parse(e.responseText).message;
+            alert(message)//||JSON.parse(localStorage.getItem("userInfo"))==null  这个我在过滤器判断下
+            if (message===("登录已过期，请重新登录!")||localStorage.getItem("token")==null){
+                top.location="login.html";
+            }
+            console.log(JSON.parse(e.responseText).message)
+        }
+    });
     layui.use(['jquery', 'layer', 'miniAdmin','miniTongji'], function () {
         document.getElementById("username").innerHTML="<span>"+username+"</span>";
 

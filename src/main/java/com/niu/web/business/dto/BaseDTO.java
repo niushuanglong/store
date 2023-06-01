@@ -18,7 +18,7 @@ public class BaseDTO {
     @ApiModelProperty(value = "id")
     private String id;
     @ApiModelProperty(value = "创建日期")
-    @JsonFormat(pattern = "yyyy-mm-dd HH:mm:ss")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date createTime;
     @ApiModelProperty(value = "最后修改时间", hidden = true)
     private Date lastUpdateTime;

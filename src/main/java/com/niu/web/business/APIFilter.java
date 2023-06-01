@@ -86,11 +86,11 @@ public class APIFilter implements Filter {
         }
         if(accessTokenUserDTO==null|| StringUtils.isBlank(accessTokenUserDTO.getUserId())){
             logger.error("请求地址{}无法获取到access_token【{}】所以无法获取登录用户。",req.getRequestURI(),accessTokenUserDTO);
-            throw new BusinessException("请重新登录！",Constant.STATUS_ERR.getId());
+            throw new BusinessException("登录已过期，请重新登录!",Constant.STATUS_ERR.getId());
         }
         if (accessTokenUserDTO.getExpireTime().compareTo(new Date())<0){
             resp.sendRedirect(req.getContextPath()+"/view/login");
-            throw new BusinessException("登录已过期，请重新登录！",Constant.STATUS_ERR.getId());
+            throw new BusinessException("登录已过期，请重新登录!",Constant.STATUS_ERR.getId());
         }
         req.getSession().setAttribute(Constant.ACCESS_USER.getId(), accessTokenUserDTO);
     }

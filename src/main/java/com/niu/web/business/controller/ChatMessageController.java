@@ -30,7 +30,7 @@ public class ChatMessageController {
     private ChatMessageService chatMessageService;
 
 
-    @ApiOperation("查找用户朋友")
+    @ApiOperation("查找当前用户好友")
     @RequestMapping(value = "/findFriends/{userId}", method = RequestMethod.POST)
     public JsonResult findFriends(@PathVariable String userId,HttpServletRequest request) {
         AccessTokenUserDTO accessTokenUserFromReq = new AccessTokenAssembler().getAccessTokenUserFromReq(request);
