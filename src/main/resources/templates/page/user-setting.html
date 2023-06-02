@@ -40,9 +40,9 @@
                 <tips>仅支持上传jpg、jpeg、png</tips>
                 <div class="layui-upload-list layui-form-item">
                     <div>
-                    <label class="layui-form-label">图片</label>
-                    <img id="avatar" value="avatar" src="" class="layui-upload-img" >
-                    <p id="uploadStatus"></p>
+                        <label class="layui-form-label">图片</label>
+                        <img height="100px" width="100px" id="avatar" value="avatar" src="" onclick="" class="layui-upload-img" >
+                        <p id="uploadStatus"></p>
                     </div>
                 </div>
             </div>
@@ -81,22 +81,38 @@
                 area: ['auto'],
                 skin: 'layui-layer-nobg', //没有背景色
                 shadeClose: true,
-                content: $('#avatar')
+                content: "<img src="+document.getElementById("avatar").src+" />"
             });
         });
 
         //回显用户信息用
         $(document).ready(function(){
-            var nickname = document.getElementById("nickname");
-            nickname.value=userInfo.nickname;
-            var phone = document.getElementById("phone");
-            phone.value=userInfo.phone;
-            var email = document.getElementById("email");
-            email.value=userInfo.email;
-            var motto = document.getElementById("motto");
-            motto.value=userInfo.motto;
-            var avatar = document.getElementById("avatar");
-            $('#avatar').attr('src', userInfo.avatar);
+            $.ajax({
+                url:"/api/user/findUserById",
+                data:{id:userid},
+                dataType:"json",
+                type:"GET",
+                cache : false,
+                async : false,
+                contentType: "application/json;charset=utf-8", // 设置请求头
+                success(resp){
+                    if (resp.code==100){
+                        var nickname = document.getElementById("nickname");
+                        nickname.value=resp.data.nickname;
+                        var phone = document.getElementById("phone");
+                        phone.value=resp.data.phone;
+                        var email = document.getElementById("email");
+                        email.value=resp.data.email;
+                        var motto = document.getElementById("motto");
+                        motto.value=resp.data.motto;
+                        var avatar = document.getElementById("avatar");
+                        $('#avatar').attr('src', resp.data.avatar);
+                    }
+                }, error(err){
+                    alert(err.responseJSON.message)
+                    layer.msg('服务器错误!');
+                }
+            })
         })
         //常规使用 - 普通图片上传
         var uploadInst = upload.render({
@@ -109,13 +125,11 @@
                 obj.preview(function(index, file, result){
                     $('#avatar').attr('src', result); //图片链接（base64）
                 });
-
                 element.progress('demo', '0%'); //进度条复位
                 layer.msg('上传中', {icon: 16, time: 0});
             }
             ,done: function(res){
                 layer.msg(res.msg);
-
                 //上传成功的一些操作
                 $('#uploadStatus').html(''); //置空上传失败的状态
             }
@@ -149,7 +163,6 @@
                 async : false,
                 contentType: "application/json;charset=utf-8", // 设置请求头
                 success(resp){
-                    debugger
                     if (resp.code==100){
                         layer.msg('修改成功', function () {localStorage.setItem("userInfo",JSON.stringify(resp.data))});
                     }

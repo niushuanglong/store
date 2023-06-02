@@ -46,17 +46,36 @@ public class FileUtils {
         }
         return result.toString();
     }
+
+    /**
+     * 获得当前系统Linux或者windows
+     * @return
+     */
     public static String getOSId(){
+        String OSId;
+        //如果是windows系统
+        if (System.getProperty("os.name").contains("Win")){
+            OSId=Constant.RESOURCE_WINDOWS_IMAGE_PATH.getId();
+        }else {
+            OSId=Constant.RESOURCE_LINUX_IMAGE_PATH.getId();
+        }
+        return OSId;
+    }
+
+    /**
+     * 获取系统文件保存位置
+     * @return
+     */
+    public static String getOSName(){
         String savePath;
         //如果是windows系统
         if (System.getProperty("os.name").contains("Win")){
-            savePath=Constant.RESOURCE_WINDOWS_IMAGE_PATH.getId();
+            savePath=Constant.RESOURCE_WINDOWS_IMAGE_PATH.getName();
         }else {
-            savePath=Constant.RESOURCE_LINUX_IMAGE_PATH.getId();
+            savePath=Constant.RESOURCE_LINUX_IMAGE_PATH.getName();
         }
         return savePath;
     }
-
     //文件转Base64
     public String toBase64(MultipartFile multipartFile) {
         String map;
@@ -68,17 +87,6 @@ public class FileUtils {
             return "图片转换失败";
         }
         return map;
-    }
-
-    public static String getOSName(){
-        String savePath;
-        //如果是windows系统
-        if (System.getProperty("os.name").contains("Win")){
-            savePath=Constant.RESOURCE_WINDOWS_IMAGE_PATH.getName();
-        }else {
-            savePath=Constant.RESOURCE_LINUX_IMAGE_PATH.getName();
-        }
-        return savePath;
     }
     /**
      * 根据路径生成文件

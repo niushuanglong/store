@@ -127,6 +127,14 @@ public class UserServiceImpl extends ServiceImpl<UserMapper,User> implements Use
         return new JsonResult(new UserAssembler().fromUserDTO(userMapper.selectById(dto.getId())));
     }
 
+    @Override
+    public JsonResult findUserById(String id) {
+        if (StringUtils.isBlank(id)){
+            throw new RuntimeException("id不能为空!");
+        }
+        return new JsonResult(new UserAssembler().fromUserDTO(userMapper.selectById(id)));
+    }
+
     private QueryWrapper queryUserCondition(UserQueryVO vo){
         QueryWrapper queryWrapper = new QueryWrapper();
         if (StringUtils.isNotBlank(vo.getId())){

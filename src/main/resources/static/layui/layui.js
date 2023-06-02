@@ -36,7 +36,6 @@
         code: "modules/code",
         jquery: "modules/jquery",
         mobile: "modules/mobile",
-        ajaxError:"modules/ajaxError",
         "layui.all": "../layui.all"
     };
     r.prototype.cache = n, r.prototype.define = function (e, t) {

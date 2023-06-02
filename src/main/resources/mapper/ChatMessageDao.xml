@@ -18,7 +18,7 @@
     <select id="LookTwoUserMsg" resultType="com.niu.web.business.pojo.ChatMessage">
         select * from t_char_message where
             send_user_id=#{userId} and receive_user_id=#{receiveUserId} or
-            send_user_id=#{receiveUserId} and receive_user_id=#{userId}
+            send_user_id=#{receiveUserId} and receive_user_id=#{userId} order by receive_date
     </select>
 
 

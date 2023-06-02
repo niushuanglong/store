@@ -124,9 +124,7 @@ public class WebSocketService {
     }
     public void sendToUser(ChatMessageDTO dto){
         try {
-            String sendUserId = dto.getSendUserId();
             String content = dto.getContent();
-            String msgType = dto.getMsgType();
             String receiveUserId = dto.getReceiveUserId();
             dto.setReceiveDate(new Date());
             chatMessageService.insertCharMessage(dto);

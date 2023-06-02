@@ -1,6 +1,7 @@
 package com.niu.web.business.pojo;
 
 import com.baomidou.mybatisplus.annotation.TableName;
+import com.niu.web.business.utils.IPUtils;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -35,7 +36,12 @@ public class ChatMessage extends BaseInfo{
     //接收时间
     private Date receiveDate;
 
+
+
     public ChatMessage(String sendUserId, String receiveUserId, String msgType, String content, Date receiveDate) {
+//        this.createTime=new Date();
+//        this.lastUpdateTime=new Date();
+//        this.ipAddress=IPUtils.getIpAddr();
         this.sendUserId = sendUserId;
         this.receiveUserId = receiveUserId;
         this.msgType = msgType;

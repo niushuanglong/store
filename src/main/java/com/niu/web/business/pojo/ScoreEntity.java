@@ -18,7 +18,7 @@ import java.util.Date;
  */
 @Entity
 @Table(
-		name = "t_score"
+		name = "score"
 )
 @TableName("score")
 @Getter

@@ -52,9 +52,7 @@ public class User extends BaseInfo{
     @ApiModelProperty(value = "座右铭")
     private String motto;
     @ApiModelProperty(value = "用户头像")
-    @Column(updatable=false)
-    @Lob
-    @Basic(fetch=FetchType.LAZY)
+    //@Column(name = "avatar",columnDefinition = "BLOB(65535)")
     private String avatar;
     public String getId() {
         return id;

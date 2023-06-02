@@ -1,14 +1,11 @@
 package com.niu.web.business.pojo;
-import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.annotation.TableId;
+
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.*;
 
 import javax.persistence.Entity;
-import javax.persistence.Index;
 import javax.persistence.Table;
 import java.io.Serializable;
-import java.util.Date;
 
 /**
  * 
@@ -19,7 +16,7 @@ import java.util.Date;
  */
 @Entity
 @Table(
-		name = "t_teacher"
+		name = "teacher"
 )
 @TableName("teacher")
 @Getter

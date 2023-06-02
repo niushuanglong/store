@@ -16,6 +16,11 @@ spring:
         max-wait: -1 # 最大阻塞等待时间(使用负值表示没有限制) 默认为 -1 ms
         max-idle: 5 # 最大空闲连接 默认为 8
         # 最小空闲连接 默认为 0
+  servlet:
+    multipart:
+      #上传不超过两兆
+      max-file-size: 2MB
+      max-request-size: 50MB
 
   thymeleaf:
     prefix: classpath:templates/
@@ -51,6 +56,6 @@ mybatis-plus:
   configuration:
     map-underscore-to-camel-case: true
     call-setters-on-nulls: true
-    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+#    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
 
 

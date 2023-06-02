@@ -46,14 +46,17 @@ public class UserController {
     @ApiOperation(value = "删除用户信息",httpMethod = "GET")
     @RequestMapping(value = "/delUser",method = RequestMethod.GET)
     public JsonResult delUser(String userId, HttpServletRequest request){
-        AccessTokenUserDTO accessToken = new AccessTokenAssembler().getAccessTokenUserFromReq(request);
         return userService.delUser(userId);
     }
     @ApiOperation(value = "修改用户信息",httpMethod = "POST")
     @RequestMapping(value = "/changeUserInfo",method = RequestMethod.POST)
     public JsonResult changeUserInfo(@RequestBody UserDTO dto, HttpServletRequest request){
-        AccessTokenUserDTO accessToken = new AccessTokenAssembler().getAccessTokenUserFromReq(request);
         return userService.changeUserInfo(dto);
+    }
+    @ApiOperation(value = "根据用户id查询用户信息",httpMethod = "GET")
+    @RequestMapping(value = "/findUserById",method = RequestMethod.GET)
+    public JsonResult findUserById(@RequestParam String id, HttpServletRequest request){
+        return userService.findUserById(id);
     }
 
 }

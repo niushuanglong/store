@@ -4,10 +4,8 @@ import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.niu.web.business.SYSCONSTANT.Constant;
-import com.niu.web.business.assembler.AttachmentAssembler;
 import com.niu.web.business.assembler.ChatMessageAssembler;
 import com.niu.web.business.assembler.UserAssembler;
-import com.niu.web.business.dto.AttachmentValObj;
 import com.niu.web.business.dto.ChatFriendsDTO;
 import com.niu.web.business.dto.ChatMessageDTO;
 import com.niu.web.business.dto.UserDTO;
@@ -22,7 +20,6 @@ import com.niu.web.business.pojo.User;
 import com.niu.web.business.service.ChatMessageService;
 import com.niu.web.business.utils.FileUtils;
 import com.niu.web.business.utils.JsonResult;
-import com.niu.web.business.utils.Sm4Utils;
 import org.apache.commons.io.FilenameUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -30,12 +27,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
-import java.time.Instant;
-import java.time.LocalDate;
-import java.util.Collections;
 import java.util.List;
-import java.util.Objects;
-import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Transactional
@@ -83,14 +75,9 @@ public class ChatMessageServiceImpl extends ServiceImpl<ChatMessageDao, ChatMess
             return new JsonResult();
         }
         List<User> users = userMapper.selectBatchIds(fUserIds);
-        List<ChatFriendsDTO> collect = users.stream().filter(u->!u.getId().equals(userId)).map(user -> {
-            Attachment attachment = attachmentDao.selectById(attachmentDao.findAttachmentByTypeUserId(userId,Constant.SAVE_TYPE_AVATAR.getId(),Constant.FILE_CATEGORY_IMAGE.getId()));
-            String name="";
-            if (attachment!=null){
-                name = Constant.RESOURCE_WINDOWS_IMAGE_PATH.getName() + "/" + attachment.getName();
-            }
-            return new ChatFriendsDTO(null, user.getId(),name , user.getUsername());
-        }).collect(Collectors.toList());
+        List<ChatFriendsDTO> collect = users.stream().filter(u->!u.getId().equals(userId)).map(user ->
+                new ChatFriendsDTO(null, user.getId(),user.getAvatar() , user.getUsername())
+        ).collect(Collectors.toList());
         return new JsonResult(collect);
     }
     //根据接收方id查询消息记录

@@ -18,7 +18,7 @@ import java.util.Date;
  */
 @Entity
 @Table(
-		name = "t_class"
+		name = "class"
 )
 @TableName("class")
 @Getter

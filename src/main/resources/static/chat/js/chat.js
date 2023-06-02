@@ -52,9 +52,8 @@ var layedit;
 var  kflag =  false ;
 layui.use(['form', 'layedit', 'laydate'], function () {
     var form = layui.form,
-        layer = layui.layer,
-        $ = layui.jquery,
-    layedit = layui.layedit;
+        layer = layui.layer;
+        layedit = layui.layedit;
 
     //设置上传图片接口
     layedit.set({
@@ -339,23 +338,27 @@ if ('WebSocket' in window) {
 }
 //连接发生错误的回调方法
 websocket.onerror = function () {
-    //setMessageInnerHTML("error");
+    debugger
+    setMessageInnerHTML("error");
 };
 //连接成功建立的回调方法
 websocket.onopen = function (event) {
-    //draw();
     setMessageInnerHTML("open");
 }
 //接收到消息的回调方法
 websocket.onmessage = function (event) {
+    debugger
     setMessageInnerHTML(event.data);
 }
 //连接关闭的回调方法
-websocket.onclose = function () {
-    //setMessageInnerHTML("close");
+websocket.onclose = function (e) {
+    debugger
+    console.log(e.code + ' ' + e.reason + ' ' + e.wasClean);
+    setMessageInnerHTML("close");
 }
 //监听窗口关闭事件，当窗口关闭时，主动去关闭websocket连接，防止连接还没断开就关闭窗口，server端会抛异常。
 window.onbeforeunload = function () {
+    debugger
     websocket.close();
 };
 
@@ -427,10 +430,10 @@ function sendVideo(){
 //发送指定人消息
 function sendNormalMsg() {
     let layedit = layui.layedit;
-    debugger
-    let message = layedit.getContent(normalEidt).trim();
+    let message = layedit.getContent(normalEidt);
     //没有标签的内容
     let notTagMessage = layedit.getText(normalEidt);
+    //有空格jq解析失败问题&nbsp;
     let contentList= $(message);
     //判断是否包含表情，如果包含表情，则直接发送消息
     let isImg = false;

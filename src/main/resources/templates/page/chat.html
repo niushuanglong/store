@@ -35,8 +35,7 @@
                     <div class="layui-tab-content" style="padding:0px;">
                         <div class="layui-tab-item layui-show" id="vuechat">
                             <div style="width: 100%;">
-                                <div class="alluser"  id="leftscroll">
-<!--                                  onmouseover="leftscroll(1)"   onmouseleave="leftscroll(2)"-->
+                                <div class="alluser"  id="leftscroll" onmouseover="leftscroll(1)"   onmouseleave="leftscroll(2)">
                                     <form>
                                         <div class="layui-input-block functional-area-icon" style="margin: 0;">
                                             <input type="text" name="Number" placeholder="请输入好友号查询"
@@ -81,8 +80,8 @@
                                         <span>主动一点，世界会更大。</span>
                                     </div>
                                     <div id="words" style="display: none">
-                                        <div class="talk_show talkimg" id="msgcontent" >
-<!--                                           onmouseover="leftscroll(3)"  onmouseleave="leftscroll(4)"-->
+                                        <div class="talk_show talkimg" id="msgcontent" onmouseover="leftscroll(3)"  onmouseleave="leftscroll(4)">
+
                                             <div v-for="(msg,index) in listmessage" :key="index">
                                                 <div v-if="msg.sendUserId === userId">
                                                     <div class="rtalk" :id="index" @click="openimg(index)">
@@ -229,7 +228,7 @@
                             <div style="display:none;" id="userinfo">
                                 <div class="single-member effect-1">
                                     <div>
-                                        <img :src="userinfo.img" style="width:100px"  class="layui-circle">
+                                        <img :src="userinfo.avatar" style="width:100px"  class="layui-circle">
                                     </div>
                                     <div class="member-info">
                                         <h3>{{userinfo.username}}</h3>

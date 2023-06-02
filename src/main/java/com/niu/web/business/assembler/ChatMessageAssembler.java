@@ -18,13 +18,6 @@ import java.util.stream.Collectors;
  */
 public class ChatMessageAssembler {
 
-    public List<ChatFriendsDTO> formChatFriendsDTOS(List<ChatFriends> chatFriends) {
-        return chatFriends.stream().filter(Objects::nonNull).map(c -> new ChatFriendsDTO(
-                c.getId(), c.getCreateTime(), c.getLastUpdateTime(), c.getIpAddress(), c.getUserId(), c.getFUserId(),
-                "/images/e16f6205-2acd-43c6-8d4b-65f7432dfe7e.png",c.getUsername())
-        ).collect(Collectors.toList());
-    }
-
     public List<ChatMessageDTO> formChatMessageDTOS(List<ChatMessage> chatMessages, UserMapper userMapper) {
         UserAssembler userAssembler = new UserAssembler();
         return chatMessages.stream().filter(Objects::nonNull).map(c ->

@@ -57,4 +57,11 @@ public interface UserService extends IService<User> {
      * @return
      */
     JsonResult changeUserInfo(UserDTO dto);
+
+    /**
+     * 根据用户id查询
+     * @param id
+     * @return
+     */
+    JsonResult findUserById(String id);
 }

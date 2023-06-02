@@ -73,4 +73,9 @@ public abstract class BaseInfo {
         this.lastUpdateTime = new Date();
         this.ipAddress = IPUtils.getIpAddr();
     }
+    public void  setBaseInfo(Date createTime,Date lastUpdateTime,String ipAddress) {
+        this.createTime = createTime==null?new Date():createTime;
+        this.lastUpdateTime = lastUpdateTime==null?new Date():lastUpdateTime;
+        this.ipAddress = ipAddress==null?IPUtils.getIpAddr():ipAddress;
+    }
 }
