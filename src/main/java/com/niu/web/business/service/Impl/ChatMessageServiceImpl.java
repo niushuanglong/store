@@ -91,7 +91,7 @@ public class ChatMessageServiceImpl extends ServiceImpl<ChatMessageDao, ChatMess
     @Override
     public void insertCharMessage(ChatMessageDTO dto) {
         ChatMessageAssembler chatMessageAssembler = new ChatMessageAssembler();
-        ChatMessage chatMessage=chatMessageAssembler.formChatMessageDTO(dto);
+        ChatMessage chatMessage=chatMessageAssembler.toChatMessageDTO(dto);
         chatMessageDao.insert(chatMessage);
     }
 

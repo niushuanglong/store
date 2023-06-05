@@ -28,7 +28,7 @@ public class ChatMessageAssembler {
 
     }
 
-    public ChatMessage formChatMessageDTO(ChatMessageDTO dto) {
+    public ChatMessage toChatMessageDTO(ChatMessageDTO dto) {
         return new ChatMessage(dto.getSendUserId(),dto.getReceiveUserId(),dto.getMsgType(),dto.getContent(),dto.getReceiveDate());
     }
 }

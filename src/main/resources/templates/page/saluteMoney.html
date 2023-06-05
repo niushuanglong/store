@@ -10,7 +10,6 @@
     <link th:href="@{/layui/css/layui.css}" rel="stylesheet">
 </head>
 <body>
-
 <table class="layui-hide" id="test" lay-filter="test">
     <div class="layui-form layui-card-header layuiadmin-card-header-auto">
         <div class="layui-form-item">
@@ -23,71 +22,64 @@
             <div class="layui-inline">
                 <label class="layui-form-label">用户名</label>
                 <div class="layui-input-block">
-                    <input id="username" type="text" name="username" placeholder="请输入" class="layui-input">
-                </div>
-            </div>
-            <div class="layui-inline">
-                <label class="layui-form-label">邮箱</label>
-                <div class="layui-input-block">
-                    <input id="email" type="text" name="email" placeholder="请输入" autocomplete="off" class="layui-input">
-                </div>
-            </div>
-            <div class="layui-inline">
-                <label class="layui-form-label">性别</label>
-                <div class="layui-input-block">
-                    <select id="gender" name="gender">
-                        <option value="0">不限</option>
-                        <option value="1">男</option>
-                        <option value="2">女</option>
-                    </select>
-                    <div class="layui-unselect layui-form-select">
-                        <div class="layui-select-title">
-                            <input type="text" placeholder="请选择" value="不限" readonly="" class="layui-input layui-unselect">
-                            <i class="layui-edge"></i>
-                        </div>
-                        <dl class="layui-anim layui-anim-upbit">
-                            <dd lay-value="0" class="layui-this">不限</dd>
-                            <dd lay-value="1" class="">男</dd>
-                            <dd lay-value="2" class="">女</dd>
-                        </dl>
-                    </div>
+                    <input id="name" type="text" name="username" placeholder="请输入" class="layui-input">
                 </div>
             </div>
             <a class="layui-btn"data-type="reload" lay-submit lay-filter="search" >搜索</a>
+            <button class="layui-btn" id="addRow"  data-type="add" lay-event="add">添加</button>
         </div>
     </div>
 
 </table>
 
+
 <script type="text/html" id="toolbarDemo">
 
 </script>
-
+<script type="text/html" id="funeralOrHappySel">
+    <select id="HappySel" class="layui-border" lay-ignore>
+        <option value="丧事">丧事</option>
+        <option value="喜事">喜事</option>
+        <option value="无">无</option>
+    </select>
+</script>
 
 <script type="text/html" id="barDemo">
-    <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
+    <a class="layui-btn layui-btn-xs" lay-event="save">保存</a>
     <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
 </script>
+<!--<script type="text/html" id="editTime">-->
+<!--    <input class="layui-input" id="rowDate" lay-event="editTime1"/>-->
+<!--</script>-->
 <script th:src="@{/layui/layui.js}"></script>
 <script th:online="none">
-    layui.use(['table','form'], function(){
+    layui.use(['table','form','laydate','element','layer'], function(){
         var table = layui.table,
             $ = layui.jquery,
+            layer =layui.layer,
             form  = layui.form;
+        var laydate =layui.laydate;
+
         $(document).ready(function(){
             initUser("");
             // 登录过期的时候，跳出ifram框架
             //if (top.location != self.location) top.location = self.location;
-
         })
-        $('.searchUser').on('click', function(data){
-            var username=document.getElementById("username").value;
-            var id=document.getElementById("userId").value;
-            var email=document.getElementById("email").value;
-            var gender=document.getElementById("gender").value;
-            var datainfo={username:username,id:id,email:email,gender:gender};
-            initUser(datainfo);
-            return false;
+        //导入excel
+
+        //添加行
+        $("#addRow").on("click", function() {
+            var newData = table.cache["test"];
+            var newRow = {"id": "","name":"","time":"","salute":"","reason":"","funeralOrHappy":""};
+            newData.push(newRow);
+            table.reload("test", {
+                parseData: function(res){
+                    return {
+                        code: 100,
+                        data: newData
+                    }
+                }
+            });
         });
         form.on('submit(search)', function(data){
             initUser(data.field);
@@ -96,7 +88,7 @@
         function initUser(data){
             table.render({
                 elem: '#test'
-                ,url:'/api/user/findUserInfo'
+                ,url:'/api/salute/findRecord'
                 ,method:'post'
                 ,contentType :'application/json;charset=utf-8'
                 ,data:data
@@ -113,12 +105,18 @@
                 ,cols: [
                     [
                         {type: 'checkbox', fixed: 'left'}
-                        ,{field:'id', fixed: 'left', width:80, title: 'ID', sort: true, totalRowText: '合计：'}
-                        ,{field:'name', width:80, title: '姓名'}
-                        ,{field:'time', width:80, title: '时间'}
-                        ,{field:'salute', width:80, title: '礼金'}
-                        ,{field:'reason', width:80, title: '事由'}
-                        ,{field:'funeralOrHappy', width:80, title: '丧事or喜事'}
+                        ,{field:'id', fixed: 'left', width:180, title: 'ID', sort: true, totalRowText: '合计：'}
+                        ,{field:'name', width:180, title: '姓名',edit: 'textarea', minWidth: 160, style: '-moz-box-align: start;'}
+                        ,{field: 'time', width:190,title: '时间',edit: 'date', templet:Complet,event:"editTime1"}//
+                        ,{field:'salute', width:180, title: '礼金(单位:元)',edit: 'textarea', minWidth: 160, style: '-moz-box-align: start;'}
+                        ,{field:'reason', width:580, title: '事由',edit: 'textarea', minWidth: 160, style: '-moz-box-align: start;'}
+                        ,{field:'funeralOrHappy', width:115, title: '丧事or喜事', minWidth:115, templet: '#funeralOrHappySel', exportTemplet: function(d, obj){
+                                console.log(obj)
+                                // 处理该字段的导出数据
+                                var td = obj.td(this.field); //获取当前 td
+                                return td.find('select').val();
+                            }}
+                        ,{fixed: 'right', title:'操作', width: 125, minWidth: 125, toolbar: '#barDemo'}
                     ]
                 ]
                 ,done: function(){
@@ -130,6 +128,12 @@
                 }
             });
             return false;
+        }
+        function Complet(obj) {
+            debugger
+            var c=obj.time;
+            var date="CompleteDate"+obj.id;
+            return '<span id='+date+' placeholder="yyyy-MM-dd">'+c+'</span>'
         }
         // 工具栏事件
         table.on('toolbar(test)', function(obj){
@@ -176,8 +180,8 @@
                 layer.confirm('真的删除行么', function(index){
                     obj.del();
                     $.ajax({
-                        url:"/delEvent",
-                        data:{userId:data.id},
+                        url:"/api/salute/delEvent",
+                        data:{id:data.id},
                         //请求的类型
                         contentType: "application/json;charset=utf-8", // 设置请求头
                         dataType:"json",
@@ -202,6 +206,41 @@
                     area: ['80%','80%'],
                     content: '<div style="padding: 16px;">自定义表单元素</div>'
                 });
+            }else if (obj.event === 'editTime1'){
+                laydate.render({
+                    elem: '#CompleteDate'+obj.data.id, //指定元素
+                    type:'date',
+                    trigger:'click',
+                    show:true,
+                    min:0,
+                    done:function (value) {
+
+                        debugger
+                        console.log(document.getElementById('CompleteDate'+obj.data.id))
+                        var id='#CompleteDate'+obj.data.id;
+                        $(id).val(value)
+                        console.log("value::"+value)
+                    }
+                });
+            }else if (obj.event === 'save'){
+                $.ajax({
+                    url:"/api/salute/addOrUpdateSalute",
+                    data:JSON.stringify(obj.data.field),
+                    //请求的类型
+                    contentType: "application/json;charset=utf-8", // 设置请求头
+                    dataType:"json",
+                    type:"post",
+                    success(resp){
+                        if (resp.code==100){
+                            layer.alert(resp.msg)
+                        }else {
+                            layer.alert(resp.msg)
+                        }
+                    },error(err){
+                        alert(err.msg)
+                        console.log("服务器错误!")
+                    }
+                })
             }
         });
 
@@ -217,8 +256,29 @@
 
         // 行单击事件
         table.on('row(test)', function(obj){
-            //console.log(obj);
-            //layer.closeAll('tips');
+            //
+            // var rowDate = $("#rowDate").val();
+            // if (rowDate!==""&&rowDate!=null){
+            //     obj.data.time=rowDate;
+            //     $.ajax({
+            //         url:"/api/salute/addOrUpdateSalute",
+            //         data:JSON.stringify(data),
+            //         //请求的类型
+            //         contentType: "application/json;charset=utf-8", // 设置请求头
+            //         dataType:"json",
+            //         type:"post",
+            //         success(resp){
+            //             if (resp.code==100){
+            //                 layer.alert(resp.msg)
+            //             }else {
+            //                 layer.alert(resp.msg)
+            //             }
+            //         },error(err){
+            //             alert(err.msg)
+            //             console.log("服务器错误!")
+            //         }
+            //     })
+            // }
         });
         // 行双击事件
         table.on('rowDouble(test)', function(obj){
@@ -234,6 +294,24 @@
             var update = {};
             update[field] = value;
             obj.update(update);
+            $.ajax({
+                url:"/api/salute/addOrUpdateSalute",
+                data:JSON.stringify(data),
+                //请求的类型
+                contentType: "application/json;charset=utf-8", // 设置请求头
+                dataType:"json",
+                type:"post",
+                success(resp){
+                    if (resp.code==100){
+                        layer.alert(resp.msg)
+                    }else {
+                        layer.alert(resp.msg)
+                    }
+                },error(err){
+                    alert(err.msg)
+                    console.log("服务器错误!")
+                }
+            })
         });
     });
 </script>

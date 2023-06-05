@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta charset="utf-8">
-    <title>网站用户</title>
+    <title>上礼记录</title>
     <meta name="renderer" content="webkit">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -87,15 +87,6 @@
             //if (top.location != self.location) top.location = self.location;
 
         })
-        $('.searchUser').on('click', function(data){
-            var username=document.getElementById("username").value;
-            var id=document.getElementById("userId").value;
-            var email=document.getElementById("email").value;
-            var gender=document.getElementById("gender").value;
-            var datainfo={username:username,id:id,email:email,gender:gender};
-            initUser(datainfo);
-            return false;
-        });
         form.on('submit(search)', function(data){
             initUser(data.field);
         });

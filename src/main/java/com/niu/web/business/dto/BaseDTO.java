@@ -21,6 +21,7 @@ public class BaseDTO {
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date createTime;
     @ApiModelProperty(value = "最后修改时间", hidden = true)
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date lastUpdateTime;
     @ApiModelProperty(value = "用户IP地址")
     private String ipAddress;

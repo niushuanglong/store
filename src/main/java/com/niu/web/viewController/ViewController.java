@@ -14,7 +14,7 @@ import javax.servlet.http.HttpServletResponse;
  */
 @RequestMapping("/view")
 @Controller
-public class viewController {
+public class ViewController {
 
     @RequestMapping("/login")
     public String loginHandler(){

@@ -30,9 +30,9 @@
           "target": "_self"
         },
         {
-          "title": "上礼多少钱记录(个人用)",
+          "title": "上礼记录(个人用)",
           "href": "/view/page/saluteMoney",
-          "icon": "fa fa-home",
+          "icon": "fa fa-usd",
           "target": "_self"
         },
         {
