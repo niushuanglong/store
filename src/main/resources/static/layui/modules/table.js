@@ -60,10 +60,6 @@
         if (a.elem = t(a.elem), a.where = a.where || {}, a.id = a.id || a.elem.attr("id") || e.index, a.request = t.extend({
             pageName: "pageNo",
             limitName: "pageSize",
-            username:"username",
-            id:"id",
-            email:"email",
-            gender:"gender",
         }, a.request), a.response = t.extend({
             statusName: "code",
             statusCode: 100,
@@ -190,8 +186,7 @@
         };
         if (i.startTime = (new Date).getTime(), a.url) {
             var r = {};
-            r[l.pageName] = e, r[l.limitName] = a.limit,r[l.username] = a.data.username
-                ,r[l.id] = a.data.id,r[l.email] = a.data.email,r[l.gender] = a.data.gender;
+            r[l.pageName] = e, r[l.limitName] = a.limit;
             var d = t.extend(r, a.where);
             a.contentType && 0 == a.contentType.indexOf("application/json") && (d = JSON.stringify(d)), i.loading(), t.ajax({
                 type: a.method || "get",

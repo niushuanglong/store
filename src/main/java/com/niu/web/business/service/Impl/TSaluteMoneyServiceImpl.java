@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.UUID;
 
 
 @Transactional
@@ -27,11 +28,17 @@ public class TSaluteMoneyServiceImpl extends ServiceImpl<TSaluteMoneyDao, Salute
     public JsonResult addOrUpdateSalute(SaluteDTO dto) {
         SaluteMoneyAssembler saluteMoneyAssembler = new SaluteMoneyAssembler();
         String msg;
+
         if (StringUtils.isNotBlank(dto.getId())){
-            saluteMoneyDao.update(saluteMoneyAssembler.toSaluteMoney(dto),new QueryWrapper<>());
+            SaluteMoneyEntity saluteMoney=saluteMoneyDao.selectById(dto.getId());
+            saluteMoney.update(dto.getName(),dto.getTime(),dto.getSalute(),dto.getReason(),dto.getFuneralOrHappy());
+            QueryWrapper<SaluteMoneyEntity> wrapper = new QueryWrapper<>();
+            wrapper.eq("id",dto.getId());
+            saluteMoneyDao.update(saluteMoney,wrapper);
             msg="修改成功!";
         }else {
             msg="新增成功!";
+            dto.setId(UUID.randomUUID().toString());
             saluteMoneyDao.insert(saluteMoneyAssembler.toSaluteMoney(dto));
         }
         return new JsonResult(msg);
@@ -69,6 +76,9 @@ public class TSaluteMoneyServiceImpl extends ServiceImpl<TSaluteMoneyDao, Salute
         }
         if (StringUtils.isNotBlank(dto.getFuneralOrHappy())){
             queryWrapper.eq("funeral_or_happy",dto.getFuneralOrHappy());
+        }
+        if (StringUtils.isNotBlank(dto.getReason())){
+            queryWrapper.eq("reason",dto.getReason());
         }
         if (StringUtils.isNotBlank(dto.getReason())){
             queryWrapper.eq("reason",dto.getReason());

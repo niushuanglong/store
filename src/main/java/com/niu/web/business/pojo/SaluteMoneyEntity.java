@@ -46,4 +46,11 @@ public class SaluteMoneyEntity{
         this.funeralOrHappy = funeralOrHappy;
     }
 
+    public void update(String name, Date time, String salute, String reason, String funeralOrHappy) {
+        this.name = name;
+        this.time = time;
+        this.salute = salute;
+        this.reason = reason;
+        this.funeralOrHappy = funeralOrHappy;
+    }
 }
