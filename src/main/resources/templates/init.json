@@ -42,7 +42,7 @@
           "target": "_self",
           "child": [
             {
-              "title": "网站用户",
+              "title": "普通用户",
               "href": "/view/page/person",
               "target": "_self"
             },
